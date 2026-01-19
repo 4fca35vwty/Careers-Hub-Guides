@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers Hub | Resource Centre</title>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --accent-color: #007AFF;
+            --text-main: #1d1d1f;
+            --text-secondary: #424245;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-main);
+        }
+
+        header {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        .guide-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .guide-card:not(.disabled):hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .guide-card h2 {
+            font-size: 1.5rem;
+            margin-top: 0;
+        }
+
+        .guide-card p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+        }
+
+        .guide-card .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            background: rgba(0, 122, 255, 0.1);
+            color: var(--accent-color);
+        }
+
+        .guide-button {
+            text-decoration: none;
+            text-align: center;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .btn-active {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-active:hover {
+            background: #0056b3;
+        }
+
+        /* Disabled State */
+        .guide-card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            filter: grayscale(0.5);
+        }
+
+        .guide-card.disabled .badge {
+            background: rgba(0, 0, 0, 0.05);
+            color: #666;
+        }
+
+        .btn-disabled {
+            background: rgba(0, 0, 0, 0.1);
+            color: #888;
+            pointer-events: none;
+        }
+
+        .footer {
+            margin-top: auto;
+            padding: 40px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Careers Hub Centre</h1>
+        <p>Operational guides and resources for hub colleagues.</p>
+    </header>
+
+    <main class="guide-grid">
+        <div class="guide-card">
+            <div>
+                <span class="badge">AV Systems</span>
+                <h2>Clickshare System</h2>
+                <p>Wirelessly share content from your PC or mobile device to the central hub's large screen[cite: 1, 2]. Perfect for events featuring speakers at the lectern.</p>
+            </div>
+            <a href="clickshare-guide.html" class="guide-button btn-active">View Guide</a>
+        </div>
+
+        <div class="guide-card disabled">
+            <div>
+                <span class="badge">Coming Soon</span>
+                <h2>Video Wall</h2>
+                <p>Learn how to manage the multi-screen display wall for high-impact presentations and brand visualisations.</p>
+            </div>
+            <a href="#" class="guide-button btn-disabled">Not Available</a>
+        </div>
+
+        <div class="guide-card disabled">
+            <div>
+                <span class="badge">Coming Soon</span>
+                <h2>Using the External Door</h2>
+                <p>Step-by-step instructions for operating the secure external entrance, including guest access and security protocols.</p>
+            </div>
+            <a href="#" class="guide-button btn-disabled">Not Available</a>
+        </div>
+    </main>
+
+    <div class="footer">
+        &copy; 2026 Careers Hub Operational Support
+    </div>
+
+</body>
+</html>
