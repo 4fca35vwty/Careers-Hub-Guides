@@ -2,287 +2,262 @@
 <html lang="en-GB">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clickshare User Guide | Careers Hub</title>
+    <title>Clickshare Guide | Careers Hub</title>
     <style>
         :root {
             --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --accent-color: #007AFF; /* Apple Blue */
+            --accent-color: #007AFF;
             --text-main: #1d1d1f;
-            --text-secondary: #424245;
+            --sidebar-width: 300px;
         }
 
         body {
             margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #e2e2e2 0%, #ffffff 100%);
-            background-attachment: fixed;
-            color: var(--text-main);
             display: flex;
             height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f7;
             overflow: hidden;
+            color: var(--text-main);
         }
 
-        /* Sidebar Progress Bar */
+        /* --- Desktop Sidebar --- */
         .sidebar {
-            width: 300px;
+            width: var(--sidebar-width);
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-right: 1px solid var(--glass-border);
+            border-right: 1px solid rgba(0,0,0,0.1);
             padding: 40px 20px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            z-index: 10;
+            z-index: 100;
         }
 
-        .sidebar h2 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            padding-left: 10px;
-        }
-
-        .progress-container {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .btn-back {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
         }
 
         .step-indicator {
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 10px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            color: var(--text-secondary);
+            gap: 10px;
         }
 
         .step-indicator.active {
-            background: rgba(255, 255, 255, 0.8);
+            background: white;
             color: var(--accent-color);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: #ccc;
-            transition: background 0.3s ease;
+            flex-shrink: 0;
         }
 
         .active .dot {
             background: var(--accent-color);
-            box-shadow: 0 0 10px var(--accent-color);
+            box-shadow: 0 0 8px var(--accent-color);
         }
 
-        /* Main Content Area */
-        .main-content {
+        /* --- Main Content Area --- */
+        .main-viewport {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 40px;
-            position: relative;
+            transition: all 0.5s ease;
         }
 
-        .step-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
+        .card {
+            background: white;
             padding: 40px;
-            max-width: 800px;
+            border-radius: 30px;
+            max-width: 650px;
             width: 100%;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
             text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             display: none;
-            animation: fadeIn 0.5s ease;
+            animation: slideIn 0.5s ease forwards;
         }
 
-        .step-card.active {
-            display: block;
-        }
+        .card.active { display: block; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .step-card h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .step-card p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: var(--text-secondary);
-            margin-bottom: 30px;
-        }
-
-        .step-image {
+        .card img {
             width: 100%;
-            max-height: 400px;
+            max-height: 320px;
             object-fit: contain;
             border-radius: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
         }
 
-        .nav-buttons {
+        .nav-btns {
+            margin-top: 30px;
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
+            gap: 15px;
         }
 
         button {
-            padding: 12px 30px;
-            border-radius: 25px;
+            padding: 12px 28px;
+            border-radius: 20px;
             border: none;
-            font-size: 1rem;
-            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            font-weight: 600;
+            transition: 0.2s;
         }
 
-        .btn-next {
-            background: var(--accent-color);
-            color: white;
+        .btn-next { background: var(--accent-color); color: white; }
+        .btn-prev { background: #f0f0f2; color: var(--text-main); }
+
+        /* --- MOBILE & TABLET RESPONSIVE STYLES --- */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+
+            .sidebar {
+                width: 100%;
+                height: 80px;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                padding: 0;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                border-right: none;
+                border-top: 1px solid rgba(0,0,0,0.1);
+                background: rgba(255, 255, 255, 0.85);
+            }
+
+            /* Hide text and back button in mobile sidebar */
+            .btn-back, h3, .step-text { display: none; }
+
+            .step-indicator {
+                margin: 0 8px;
+                padding: 10px;
+            }
+
+            .main-viewport {
+                padding: 20px;
+                padding-bottom: 100px; /* Room for the bottom bar */
+                height: 100%;
+            }
+
+            .card {
+                padding: 25px;
+                border-radius: 24px;
+                max-width: 90%;
+            }
+
+            .card img { max-height: 220px; }
+            
+            /* Progress Bar Track for Mobile */
+            .mobile-progress-track {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 3px;
+                background: #eee;
+                width: 100%;
+            }
+
+            .mobile-progress-fill {
+                height: 100%;
+                background: var(--accent-color);
+                width: 0%;
+                transition: width 0.4s ease;
+            }
         }
 
-        .btn-next:hover {
-            background: #0056b3;
-            transform: scale(1.02);
-        }
-
-        .btn-back {
-            background: rgba(0,0,0,0.05);
-            color: var(--text-main);
-        }
-
-        .btn-back:hover {
-            background: rgba(0,0,0,0.1);
-        }
-
-        button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
+        /* Desktop specific text to hide on mobile */
+        @media (min-width: 769px) {
+            .mobile-progress-track { display: none; }
         }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>Clickshare Setup</h2>
-        <div class="progress-container" id="progressMenu">
+        <div class="mobile-progress-track">
+            <div class="mobile-progress-fill" id="progress-fill"></div>
+        </div>
+
+        <a href="index.html" class="btn-back">← Back to Hub</a>
+        <h3>Clickshare Setup</h3>
+        <div id="nav-list" style="display: flex; flex-direction: inherit; width: 100%; justify-content: center;">
             </div>
     </div>
 
-    <div class="main-content">
-        <div id="step-container">
-            </div>
-    </div>
+    <div class="main-viewport" id="card-container">
+        </div>
 
     <script>
         const steps = [
-            {
-                title: "Power On",
-                text: "Open the cabinet and turn on the TV using the black remote with ‘avocar’ written in white on it.",
-                image: "https://dl.dropboxusercontent.com/scl/fi/zs1xc9b56cun113idlui5/TV-Remote.jpg?rlkey=4gsjbyjpvzgjfv2yr1zsycie6&st=qhjkk14m&dl=0"
-            },
-            {
-                title: "Retrieve the Puck",
-                text: "Get the Clickshare Puck from the cabinet. It should be located on top of the Clickshare Unit.",
-                image: "https://dl.dropboxusercontent.com/scl/fi/rzr8nwbb1rii4pxm5pw0v/Clickshare-Unit.jpg?rlkey=0oirgz1sl6ay9ctfdtmdp135u&st=l9f8p0bf&dl=0"
-            },
-            {
-                title: "Connect to PC",
-                text: "Plug the USB Clickshare puck into your PC. It will begin to blink white after a few moments. If this is your first time, please allow a few minutes for the initial setup.",
-                image: "https://dl.dropboxusercontent.com/scl/fi/9ktftvrom61tismjjb6si/Clickshare-Puck-White.jpg?rlkey=7yv6r9srkxok359eutidwzok7&st=o72api4c&dl=0"
-            },
-            {
-                title: "Initialise Software",
-                text: "Navigate to the drive called ‘Clickshare’ and run the relevant executable (e.g. ‘Clickshare_for_Windows.exe’). Once installed, a small black box in the lower right corner will say ‘ready to pair’.",
-                image: "https://dl.dropboxusercontent.com/scl/fi/om19co27wepbmc9dpz631/Clickshare-Puck.jpg?rlkey=v4ip5puult5bzv98psi5saa8t&st=0a7wf7ys&dl=0"
-            },
-            {
-                title: "Mobile Devices",
-                text: "If you are using an Android or iOS device, use the QR code displayed on the main hub screen to connect.",
-                image: "https://dl.dropboxusercontent.com/scl/fi/rtmexd6bhqmodchv3nfbi/Clickshare-Setup-Screen.jpg?rlkey=6qnosg5ixldpu93qre84wgwv6&st=j3dzg06x&dl=0"
-            },
-            {
-                title: "Start Sharing",
-                text: "Press the button on the puck. Your content will appear on the main screen and the puck light will turn solid red.",
-                image: "https://dl.dropboxusercontent.com/scl/fi/e1clnencp37z0n08iw84b/Clickshare-Puck-Red.jpg?rlkey=7apne6386plj5q1jhg6qf3qkh&st=0fr6af74&dl=0"
-            },
-            {
-                title: "Finish & Return",
-                text: "When finished, click the button again to stop sharing. Please return the puck to its place on top of the unit in the cabinet.",
-                image: "https://dl.dropboxusercontent.com/scl/fi/rzr8nwbb1rii4pxm5pw0v/Clickshare-Unit.jpg?rlkey=0oirgz1sl6ay9ctfdtmdp135u&st=l9f8p0bf&dl=0"
-            }
+            { title: "Power On", text: "Open the cabinet and turn on the TV using the black remote with ‘avocar’ written in white on it.", img: "https://dl.dropboxusercontent.com/scl/fi/zs1xc9b56cun113idlui5/TV-Remote.jpg?rlkey=4gsjbyjpvzgjfv2yr1zsycie6&st=qhjkk14m&dl=0" },
+            { title: "Get the Puck", text: "Retrieve the Clickshare Puck from the cabinet. It should be located on top of the Clickshare Unit.", img: "https://dl.dropboxusercontent.com/scl/fi/rzr8nwbb1rii4pxm5pw0v/Clickshare-Unit.jpg?rlkey=0oirgz1sl6ay9ctfdtmdp135u&st=l9f8p0bf&dl=0" },
+            { title: "Connect to PC", text: "Plug the USB Clickshare puck into your PC. It will begin to blink white after a few moments.", img: "https://dl.dropboxusercontent.com/scl/fi/9ktftvrom61tismjjb6si/Clickshare-Puck-White.jpg?rlkey=7yv6r9srkxok359eutidwzok7&st=o72api4c&dl=0" },
+            { title: "Initialise Software", text: "Navigate to the drive called ‘Clickshare’ and run ‘Clickshare_for_Windows.exe’. Once paired, the ring will be solid white.", img: "https://dl.dropboxusercontent.com/scl/fi/om19co27wepbmc9dpz631/Clickshare-Puck.jpg?rlkey=v4ip5puult5bzv98psi5saa8t&st=0a7wf7ys&dl=0" },
+            { title: "Mobile Devices", text: "If using an Android or iOS device, use the QR code displayed on the main hub screen to connect.", img: "https://dl.dropboxusercontent.com/scl/fi/rtmexd6bhqmodchv3nfbi/Clickshare-Setup-Screen.jpg?rlkey=6qnosg5ixldpu93qre84wgwv6&st=j3dzg06x&dl=0" },
+            { title: "Start Sharing", text: "Press the button on the puck. Content appears on the main screen and the puck light turns solid red.", img: "https://dl.dropboxusercontent.com/scl/fi/e1clnencp37z0n08iw84b/Clickshare-Puck-Red.jpg?rlkey=7apne6386plj5q1jhg6qf3qkh&st=0fr6af74&dl=0" },
+            { title: "Finish & Return", text: "Click the button again to stop. Return the puck to its place on top of the unit in the cabinet.", img: "https://dl.dropboxusercontent.com/scl/fi/rzr8nwbb1rii4pxm5pw0v/Clickshare-Unit.jpg?rlkey=0oirgz1sl6ay9ctfdtmdp135u&st=l9f8p0bf&dl=0" }
         ];
 
-        let currentStep = 0;
-
-        function initGuide() {
-            const menu = document.getElementById('progressMenu');
-            const container = document.getElementById('step-container');
-
-            steps.forEach((step, index) => {
-                // Sidebar Menu
-                const indicator = document.createElement('div');
-                indicator.className = `step-indicator ${index === 0 ? 'active' : ''}`;
-                indicator.id = `indicator-${index}`;
-                indicator.innerHTML = `<div class="dot"></div><span>Step ${index + 1}: ${step.title}</span>`;
-                indicator.onclick = () => showStep(index);
-                menu.appendChild(indicator);
-
-                // Step Cards
-                const card = document.createElement('div');
-                card.className = `step-card ${index === 0 ? 'active' : ''}`;
-                card.id = `step-${index}`;
-                card.innerHTML = `
-                    <h1>${step.title}</h1>
-                    <img src="${step.image}" alt="${step.title}" class="step-image">
-                    <p>${step.text}</p>
-                    <div class="nav-buttons">
-                        <button class="btn-back" onclick="changeStep(-1)" ${index === 0 ? 'disabled' : ''}>Back</button>
-                        <button class="btn-next" onclick="changeStep(1)">${index === steps.length - 1 ? 'Finish' : 'Next'}</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function showStep(index) {
-            document.querySelectorAll('.step-card').forEach(card => card.classList.remove('active'));
-            document.querySelectorAll('.step-indicator').forEach(ind => ind.classList.remove('active'));
+        function showStep(i) {
+            document.querySelectorAll('.card, .step-indicator').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step-${i}`).classList.add('active');
+            document.getElementById(`ind-${i}`).classList.add('active');
             
-            document.getElementById(`step-${index}`).classList.add('active');
-            document.getElementById(`indicator-${index}`).classList.add('active');
-            currentStep = index;
+            // Update mobile progress bar
+            const percent = ((i + 1) / steps.length) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
         }
 
-        function changeStep(delta) {
-            let nextStep = currentStep + delta;
-            if (nextStep >= 0 && nextStep < steps.length) {
-                showStep(nextStep);
-            } else if (nextStep === steps.length) {
-                alert("Guide complete! You are ready to present.");
-            }
-        }
-
-        window.onload = initGuide;
+        steps.forEach((s, i) => {
+            // Indicator
+            document.getElementById('nav-list').innerHTML += `
+                <div class="step-indicator" id="ind-${i}" onclick="showStep(${i})">
+                    <div class="dot"></div>
+                    <span class="step-text">Step ${i+1}: ${s.title}</span>
+                </div>`;
+            
+            // Card
+            document.getElementById('card-container').innerHTML += `
+                <div class="card" id="step-${i}">
+                    <h2>${s.title}</h2>
+                    <img src="${s.img}" alt="Step ${i+1}">
+                    <p>${s.text}</p>
+                    <div class="nav-btns">
+                        ${i > 0 ? `<button class="btn-prev" onclick="showStep(${i-1})">Back</button>` : ''}
+                        <button class="btn-next" onclick="${i === steps.length-1 ? "location.href='index.html'" : `showStep(${i+1})`}">
+                            ${i === steps.length-1 ? 'Finish' : 'Next Step'}
+                        </button>
+                    </div>
+                </div>`;
+        });
+        showStep(0);
     </script>
 </body>
 </html>
