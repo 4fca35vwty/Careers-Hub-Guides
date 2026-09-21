@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Table Screen | Careers Hub</title>
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --accent-color: #5A4BC2;
+            --accent-hover: #483a9e;
+            --text-main: #1d1d1f;
+            --sidebar-width: 300px;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f7;
+            overflow: hidden;
+            color: var(--text-main);
+        }
+
+        /* --- Desktop Sidebar --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(0,0,0,0.1);
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .step-indicator {
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-indicator.active {
+            background: white;
+            color: var(--accent-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            font-weight: 600;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .active .dot {
+            background: var(--accent-color);
+            box-shadow: 0 0 8px var(--accent-color);
+        }
+
+        /* --- Main Content Area --- */
+        .main-viewport {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            transition: all 0.5s ease;
+            overflow-y: auto;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            max-width: 650px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: none;
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        .card.active { display: block; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Carousel / Image Wrapper Styles --- */
+        .img-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            background: #f0f0f2;
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card img {
+            width: 100%;
+            max-height: 320px;
+            object-fit: contain;
+            border-radius: 20px;
+            display: block;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: white;
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            line-height: 1;
+            transition: background 0.2s ease, transform 0.2s ease;
+            user-select: none;
+            z-index: 10;
+            padding: 0;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(0, 0, 0, 0.85);
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .carousel-btn.prev { left: 12px; }
+        .carousel-btn.next { right: 12px; }
+
+        .img-counter-badge {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 12px;
+            user-select: none;
+            z-index: 10;
+        }
+
+        .card p {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: #444;
+            margin: 0 0 20px 0;
+        }
+
+        .card p a {
+            color: var(--accent-color);
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .card p a:hover {
+            color: var(--accent-hover);
+        }
+
+        .nav-btns {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        button.btn-next, button.btn-prev {
+            padding: 12px 28px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-next { background: var(--accent-color); color: white; }
+        .btn-next:hover { background: var(--accent-hover); }
+        .btn-prev { background: #f0f0f2; color: var(--text-main); }
+        .btn-prev:hover { background: #e2e2e5; }
+
+        /* --- MOBILE & TABLET RESPONSIVE STYLES --- */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+
+            .sidebar {
+                width: 100%;
+                height: 80px;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                padding: 0;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                border-right: none;
+                border-top: 1px solid rgba(0,0,0,0.1);
+                background: rgba(255, 255, 255, 0.85);
+            }
+
+            .btn-back, h3, .step-text { display: none; }
+
+            .step-indicator {
+                margin: 0 8px;
+                padding: 10px;
+            }
+
+            .main-viewport {
+                padding: 20px;
+                padding-bottom: 100px;
+                height: 100%;
+            }
+
+            .card {
+                padding: 25px;
+                border-radius: 24px;
+                max-width: 90%;
+            }
+
+            .card img { max-height: 220px; }
+
+            .mobile-progress-track {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 3px;
+                background: #eee;
+                width: 100%;
+            }
+
+            .mobile-progress-fill {
+                height: 100%;
+                background: var(--accent-color);
+                width: 0%;
+                transition: width 0.4s ease;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-progress-track { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="mobile-progress-track">
+            <div class="mobile-progress-fill" id="progress-fill"></div>
+        </div>
+
+        <a href="index.html" class="btn-back">← Back to Hub</a>
+        <h3 style="margin-top: 0; margin-bottom: 20px;">Group Table Screen</h3>
+        <div id="nav-list" style="display: flex; flex-direction: inherit; width: 100%; justify-content: center;"></div>
+    </div>
+
+    <div class="main-viewport" id="card-container"></div>
+
+    <script>
+        const steps = [
+            { 
+                title: "Power On", 
+                text: "Use the controls on the side of the screen to power on the display. Don't touch the other buttons, but if in doubt, 'Ext. PC' is the correct setting.", 
+                img: "https://dl.dropboxusercontent.com/scl/fi/shgy5zgzruwc13t35pwxw/Screen-Control.jpg?rlkey=0iyl61l60t0k4z8qu0q0kw5zu&st=1rea6zjp&dl=0" 
+            },
+            { 
+                title: "Connecting via HDMI", 
+                text: "If the raspberry pi (small red and white box) is still connected, disconnect this as well as it's HDMI cable. Then use the long HDMI cable on the table beside the control panels - connect to port number 1.", 
+                img: [
+                    "https://dl.dropboxusercontent.com/scl/fi/w5jd5j5k147hilw773i42/Raspberry-Pi.jpg?rlkey=pdxwi825mrxxs1ii9aqbiiibu&st=jremy2wf&dl=0", "https://dl.dropboxusercontent.com/scl/fi/loatrvfoik4024jkstiu2/HDMI-Panel.jpg?rlkey=3d72oaicni6e2887xnpcvzg4c&st=mkmuqilj&dl=0",
+                    "https://dl.dropboxusercontent.com/scl/fi/h7rw2m42ug3slvp9fei0r/HDMI-Cable.jpg?rlkey=12mnp7te8uf5ym9y7uqrw1jl7&st=pdgubaet&dl=0"
+                ]  
+            },
+            { 
+                title: "Using Sound", 
+                text: "If your media requires sound, be sure to switch on the audio system using the power button on the audio control panel. Depending on your device you may also need a separate audio cable into 'input A' or 'input B'. You can switch between these inputs using the 'A/B' button.", 
+                img: "https://dl.dropboxusercontent.com/scl/fi/fynaim7umc7mu5y81o0x7/Audio-Controls.jpg?rlkey=216lq62tg1xtv2oxdfik57gjw&st=56yuj2ra&dl=0" 
+            },
+            { 
+                title: "External power", 
+                text: "If you need to plug in your laptop or device, you can use the power socket underneath the media control panels beside the screen.", 
+                img: "https://dl.dropboxusercontent.com/scl/fi/930wa9yd0ag58nz24a3ya/Power-Socket.jpg?rlkey=jy15ealo8lnsczeca4yejktk1&st=ngnnu30k&dl=0"
+            },
+            { 
+                title: "Finish & Return", 
+                text: "If you have unplugged the Raspberry Pi, please ensure that its power and HDMI cables are plugged in again. Please then turn off the screens using the panel on the side of the screen.", 
+                img: [
+                    "https://dl.dropboxusercontent.com/scl/fi/w5jd5j5k147hilw773i42/Raspberry-Pi.jpg?rlkey=pdxwi825mrxxs1ii9aqbiiibu&st=jremy2wf&dl=0", "https://dl.dropboxusercontent.com/scl/fi/930wa9yd0ag58nz24a3ya/Power-Socket.jpg?rlkey=jy15ealo8lnsczeca4yejktk1&st=ngnnu30k&dl=0",
+                    "https://dl.dropboxusercontent.com/scl/fi/shgy5zgzruwc13t35pwxw/Screen-Control.jpg?rlkey=0iyl61l60t0k4z8qu0q0kw5zu&st=1rea6zjp&dl=0"
+                ] 
+            }
+        ];
+
+        // Track image carousel state per step index
+        const currentImageIndexes = new Array(steps.length).fill(0);
+
+        function showStep(i) {
+            document.querySelectorAll('.card, .step-indicator').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step-${i}`).classList.add('active');
+            document.getElementById(`ind-${i}`).classList.add('active');
+            
+            // Update mobile progress bar
+            const percent = ((i + 1) / steps.length) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
+        }
+
+        function changeImage(stepIdx, direction) {
+            const images = Array.isArray(steps[stepIdx].img) ? steps[stepIdx].img : [steps[stepIdx].img];
+            let currentIdx = currentImageIndexes[stepIdx];
+
+            currentIdx = (currentIdx + direction + images.length) % images.length;
+            currentImageIndexes[stepIdx] = currentIdx;
+
+            const imgEl = document.getElementById(`step-img-${stepIdx}`);
+            const badgeEl = document.getElementById(`step-badge-${stepIdx}`);
+
+            if (imgEl) {
+                imgEl.style.opacity = '0.3';
+                setTimeout(() => {
+                    imgEl.src = images[currentIdx];
+                    imgEl.style.opacity = '1';
+                }, 150);
+            }
+
+            if (badgeEl) {
+                badgeEl.innerText = `${currentIdx + 1} / ${images.length}`;
+            }
+        }
+
+        // Render layout dynamically
+        steps.forEach((s, i) => {
+            // Render indicator item
+            document.getElementById('nav-list').innerHTML += `
+                <div class="step-indicator" id="ind-${i}" onclick="showStep(${i})">
+                    <div class="dot"></div>
+                    <span class="step-text">Step ${i+1}: ${s.title}</span>
+                </div>`;
+            
+            // Normalize image array
+            const imgList = Array.isArray(s.img) ? s.img : [s.img];
+            const hasMultipleImages = imgList.length > 1;
+
+            // Render Card HTML
+            document.getElementById('card-container').innerHTML += `
+                <div class="card" id="step-${i}">
+                    <h2>${s.title}</h2>
+                    <div class="img-wrapper">
+                        <img id="step-img-${i}" src="${imgList[0]}" alt="Step ${i+1}">
+                        ${hasMultipleImages ? `
+                            <button class="carousel-btn prev" onclick="changeImage(${i}, -1)" title="Previous Image">‹</button>
+                            <button class="carousel-btn next" onclick="changeImage(${i}, 1)" title="Next Image">›</button>
+                            <div class="img-counter-badge" id="step-badge-${i}">1 / ${imgList.length}</div>
+                        ` : ''}
+                    </div>
+                    <p>${s.text}</p>
+                    <div class="nav-btns">
+                        ${i > 0 ? `<button class="btn-prev" onclick="showStep(${i-1})">Back</button>` : ''}
+                        <button class="btn-next" onclick="${i === steps.length-1 ? "location.href='index.html'" : `showStep(${i+1})`}">
+                            ${i === steps.length-1 ? 'Finish' : 'Next Step'}
+                        </button>
+                    </div>
+                </div>`;
+        });
+
+        // Initialize active step
+        showStep(0);
+    </script>
+</body>
+</html>
